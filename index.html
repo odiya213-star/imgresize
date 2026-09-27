@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>로컬 이미지 일괄 리사이저</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <p class="eyebrow">100% LOCAL · NO UPLOAD</p>
+      <h1>이미지 일괄 리사이저</h1>
+      <p class="lead">파일은 서버로 전송되지 않습니다. 모든 변환은 이 브라우저의 메모리에서만 처리됩니다.</p>
+    </header>
+
+    <section class="panel upload-panel">
+      <label id="dropZone" class="drop-zone" for="fileInput">
+        <span class="upload-icon">↑</span>
+        <strong>이미지를 끌어놓거나 클릭하여 선택</strong>
+        <small>JPG, PNG, WebP, GIF 등 여러 파일 선택 가능</small>
+      </label>
+      <input id="fileInput" type="file" accept="image/*" multiple hidden>
+    </section>
+
+    <section class="panel settings">
+      <div class="setting-head">
+        <h2>리사이즈 설정</h2>
+        <button id="clearBtn" class="text-button" type="button">목록 비우기</button>
+      </div>
+      <div class="controls">
+        <label>기준
+          <select id="mode">
+            <option value="long">긴 축 기준</option>
+            <option value="short">짧은 축 기준</option>
+            <option value="width">X축 기준 (가로)</option>
+            <option value="height">Y축 기준 (세로)</option>
+            <option value="percent">퍼센트 비율 기준</option>
+          </select>
+        </label>
+        <label><span id="sizeLabel">긴 축 길이 (px)</span>
+          <input id="sizeValue" type="number" min="1" max="30000" value="1600">
+        </label>
+        <label>결과 형식
+          <select id="format"><option value="original">원본 형식 유지</option><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></select>
+        </label>
+        <label id="qualityWrap">품질 <span id="qualityValue">92</span>
+          <input id="quality" type="range" min="1" max="100" value="92">
+        </label>
+      </div>
+      <p id="settingHint" class="hint">가로·세로 비율은 항상 유지됩니다.</p>
+    </section>
+
+    <section class="result-bar">
+      <div><strong id="count">0</strong>개 이미지 <span id="summary"></span></div>
+      <div class="actions"><button id="resizeBtn" class="primary" type="button" disabled>리사이징 실행</button><button id="zipBtn" type="button" disabled>전체 ZIP 다운로드</button></div>
+    </section>
+
+    <section id="emptyState" class="empty">이미지를 추가하면 이곳에 결과가 표시됩니다.</section>
+    <section id="imageList" class="image-list" aria-live="polite"></section>
+  </main>
+  <template id="cardTemplate"><article class="image-card"><img><div class="card-info"><strong class="file-name"></strong><span class="dimensions"></span><span class="status">변환 대기 중</span></div><button class="download" type="button" disabled>다운로드</button><button class="remove" type="button" aria-label="이미지 삭제">×</button></article></template>
+  <canvas id="canvas" hidden></canvas>
+  <script src="app.js"></script>
+</body>
+</html>
